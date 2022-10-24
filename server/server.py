@@ -1,11 +1,12 @@
 import socket
 
 class Server:
-    def __init__(self, host, port, public_key, private_key):
+    def __init__(self, host, port, public_key, private_key, symmetric_key):
         self.HOST = host  # Server's host
         self.PORT = port
         self.public_key = public_key
         self.private_key = private_key
+        self.symmetric_key = symmetric_key
 
     # socket.AF_INET: IPv4
     # socket.SOCK_STREAM: TCP
@@ -29,5 +30,5 @@ class Server:
                         res = req()
                         conn.sendall(res)
 
-def local_server_factory(public_key, private_key):
-    return Server("127.0.0.1", 5121, public_key, private_key)
+def local_server_factory(public_key, private_key, symmetric_key):
+    return Server("127.0.0.1", 5120, public_key, private_key, symmetric_key)
