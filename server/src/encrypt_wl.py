@@ -1,5 +1,6 @@
 import json
-from . import symmetric, keys
+import os
+from . import symmetric
 from .utils.serialize import serialize
 
 def user_factory(name, pwd):
@@ -8,6 +9,7 @@ def user_factory(name, pwd):
         'pwd': pwd
     }
 
+os.makedirs('server/secret', exist_ok=True)
 # TODO: add way to add users to whitelist
 WHITELIST_PATH = 'server/secret/whitelist.json'
 WHITELIST = [

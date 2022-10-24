@@ -1,6 +1,9 @@
 import rsa
+import os
 
 def generate_keys():
+    os.makedirs('server/keys', exist_ok=True)
+
     (public_key, private_key) = rsa.newkeys(1024)
     with open('server/keys/publicKey.pem', 'wb') as p:
         p.write(public_key.save_pkcs1('PEM'))
