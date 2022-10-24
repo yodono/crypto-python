@@ -1,4 +1,5 @@
 import socket
+import json
 
 class Server:
     def __init__(self, host, port, public_key, private_key, symmetric_key):
@@ -25,10 +26,13 @@ class Server:
 
                         if not data:
                             break
-                        req = router.parse(data)
+                        req = router.parse(data, self.response)
                         # print(f"Received {data}")
-                        res = req()
-                        conn.sendall(res)
+                        response_json = req()
+                        conn.sendall(json.dumps(response_json).encode('UTF-8'))
+
+    def response(self, message, status = 200):
+        return { 'message': message, 'status': status }
 
 def local_server_factory(public_key, private_key, symmetric_key):
-    return Server("127.0.0.1", 5120, public_key, private_key, symmetric_key)
+    return Server("127.0.0.1", 5121, public_key, private_key, symmetric_key)

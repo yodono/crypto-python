@@ -1,6 +1,6 @@
 import json
 from . import keys, symmetric
-from .utils.serialize import deserialize 
+from .utils.serialize import serialize, deserialize
 
 class Controller:
     def __init__(self, server):
@@ -8,7 +8,7 @@ class Controller:
 
     def public_key(self):
         with open('server/keys/publicKey.pem', 'rb') as p:
-            return p.read()
+            return self.server.response(serialize(p.read()), 200)
 
     def auth(self, body):
         parsed = json.loads(body)
@@ -26,6 +26,6 @@ class Controller:
             target_name = symmetric.decrypt(deserialize(user['name']), self.server.symmetric_key)
 
             if target_pwd == hash(deciphered_pwd) and target_name == deciphered_name.lower():
-                return "Acesso liberado.".encode('UTF-8')
+                return self.server.response("Acesso liberado.", 200)
 
-        return "Acesso negado. Senha ou usuário inválidos.".encode('UTF-8')
+        return self.server.response('Acesso negado. Senha ou usuário inválidos.', 401)

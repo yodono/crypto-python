@@ -1,14 +1,14 @@
 import json
 from src import client, service, keys
-from src.utils.serialize import serialize
-from src.utils import colors
+from src.utils.serialize import serialize, deserialize
 
 if __name__ == "__main__":
     _client = client.local_client_factory()
     _service = service.Service(_client.send)
 
     # Load key
-    public_key = keys.load_key(_service.get("/public_key"))
+    public_key_response = _service.get("/public_key")
+    public_key = keys.load_key(deserialize(public_key_response['message']))
 
     # Auth
     name = input("Digite seu nome: ")
@@ -21,4 +21,4 @@ if __name__ == "__main__":
         'pwd': serialize(ciphered_pwd)
     }))
 
-    print(colors.wrap('purple', auth_response))
+    _client.handle_response(auth_response)
