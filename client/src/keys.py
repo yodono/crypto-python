@@ -8,6 +8,6 @@ def encrypt(msg, public_key):
 
 def verify(message, signature, key):
     try:
-        return rsa.verify(message.encode('ascii'), signature, key,) == 'SHA-1'
+        return rsa.verify(message.encode('UTF-8'), signature, key,) == 'SHA-1'
     except:
         return False

@@ -1,5 +1,7 @@
 import socket
 import json
+from src import keys
+from src.utils.serialize import serialize
 
 class Server:
     def __init__(self, host, port, public_key, private_key, symmetric_key):
@@ -32,7 +34,7 @@ class Server:
                         conn.sendall(json.dumps(response_json).encode('UTF-8'))
 
     def response(self, message, status = 200):
-        return { 'message': message, 'status': status }
+        return { 'message': message, 'status': status, 'signature': serialize(keys.sign(message, self.private_key)) }
 
 def local_server_factory(public_key, private_key, symmetric_key):
     return Server("127.0.0.1", 5121, public_key, private_key, symmetric_key)

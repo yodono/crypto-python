@@ -1,6 +1,8 @@
 import socket
 import json
+from src import keys
 from src.utils import colors
+from src.utils.serialize import deserialize
 
 class Client:
     def __init__(self, host, port):
@@ -14,7 +16,13 @@ class Client:
             data = s.recv(1024).decode('UTF-8') # receiving bytes...
         return json.loads(data)
 
-    def handle_response(self, response):
+    def handle_response(self, response, public_key):
+        is_authentic = keys.verify(response['message'], deserialize(response['signature']), public_key)
+
+        if not is_authentic:
+            print(colors.wrap('red', "Response compromised. Exiting program!"))
+            return
+
         if response['status'] == 200:
             print(colors.wrap('green', (response['message'])))
         else:

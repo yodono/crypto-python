@@ -21,4 +21,4 @@ if __name__ == "__main__":
         'pwd': serialize(ciphered_pwd)
     }))
 
-    _client.handle_response(auth_response)
+    _client.handle_response(auth_response, public_key)
