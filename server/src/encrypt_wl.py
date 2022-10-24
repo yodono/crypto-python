@@ -1,6 +1,6 @@
-import symmetric
 import json
-import keys
+from . import symmetric, keys
+from .utils.serialize import serialize
 
 def user_factory(name, pwd):
     return {
@@ -20,7 +20,7 @@ WHITELIST = [
 
 def encrypt(key):
     for user in WHITELIST:
-        user['name'] = keys.serialize(symmetric.encrypt(user['name'].encode(), key))
+        user['name'] = serialize(symmetric.encrypt(user['name'].encode(), key))
         user['pwd'] = hash(user['pwd'])
 
     with open(WHITELIST_PATH, 'w') as f:

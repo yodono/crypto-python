@@ -1,6 +1,6 @@
-import keys
 import json
-import symmetric
+from . import keys, symmetric
+from .utils.serialize import deserialize 
 
 class Controller:
     def __init__(self, server):
@@ -12,8 +12,8 @@ class Controller:
 
     def auth(self, body):
         parsed = json.loads(body)
-        name = keys.deserialize(parsed['name'])
-        pwd = keys.deserialize(parsed['pwd'])
+        name = deserialize(parsed['name'])
+        pwd = deserialize(parsed['pwd'])
 
         deciphered_name = keys.decrypt(name, self.server.private_key)
         deciphered_pwd = keys.decrypt(pwd, self.server.private_key)
@@ -23,9 +23,9 @@ class Controller:
 
         for user in whitelist_json:
             target_pwd = user['pwd']
-            target_name = symmetric.decrypt(keys.deserialize(user['name']), self.server.symmetric_key)
+            target_name = symmetric.decrypt(deserialize(user['name']), self.server.symmetric_key)
 
-            if target_pwd == hash(deciphered_pwd) or target_name == deciphered_name:
+            if target_pwd == hash(deciphered_pwd) and target_name == deciphered_name.lower():
                 return "Acesso liberado.".encode('UTF-8')
 
         return "Acesso negado. Senha ou usuário inválidos.".encode('UTF-8')

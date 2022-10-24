@@ -9,6 +9,6 @@ _colors_map = {
     'bold': '\033[1m',
     'underline': '\033[4m'
 }
-	
+
 def wrap(color, message):
     return _colors_map[color] + str(message) + _colors_map['end']

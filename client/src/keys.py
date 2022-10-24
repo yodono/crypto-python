@@ -1,5 +1,4 @@
 import rsa
-import base64
 
 def load_key(public_key):
     return rsa.PublicKey.load_pkcs1(public_key)
@@ -12,6 +11,3 @@ def verify(message, signature, key):
         return rsa.verify(message.encode('ascii'), signature, key,) == 'SHA-1'
     except:
         return False
-
-def serialize(bytes):
-    return base64.b64encode(bytes).decode()
