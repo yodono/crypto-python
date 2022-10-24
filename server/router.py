@@ -1,3 +1,5 @@
+import json
+
 class Router:
     def __init__(self):
         self.methods = {
@@ -6,7 +8,10 @@ class Router:
         }
     
     def parse(self, request):
-        method, endpoint, body = request.split("::")
+        data = json.loads(request)
+        method = data['method']
+        endpoint = data['endpoint']
+        body = data['body']
 
         if method not in self.methods:
             return lambda: "405: Method not allowed"

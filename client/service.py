@@ -5,7 +5,7 @@ class Service:
         self.send = send
 
     def get(self, endpoint = "", body = ""):
-        return self.send(f"get::{endpoint}::{body}")
+        return self.send(json.dumps({ 'method': 'get', 'endpoint': endpoint, 'body': body }))
     
     def post(self, endpoint = "", body = ""):
-        return self.send(f"post::{endpoint}::{body}")
+        return self.send(json.dumps({ 'method': 'post', 'endpoint': endpoint, 'body': body }))

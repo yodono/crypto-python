@@ -1,4 +1,5 @@
 import rsa
+import base64
 
 def generate_keys():
     (public_key, private_key) = rsa.newkeys(1024)
@@ -22,3 +23,6 @@ def decrypt(ciphertext, private_key):
 
 def sign(msg, private_key):
     return rsa.sign(msg.encode('UTF-8'), private_key, 'SHA-1')
+
+def deserialize(string):
+    return base64.b64decode(string.encode())

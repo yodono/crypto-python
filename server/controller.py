@@ -1,6 +1,4 @@
-from pytz import UTC
 import keys
-import rsa
 
 class Controller:
     def __init__(self, server):
@@ -11,10 +9,6 @@ class Controller:
             return p.read()
 
     def auth(self, body):
-        print(type(body))
-        # with open('server/keys/privateKey.pem', 'rb') as p:
-        #     private_key = rsa.PrivateKey.load_pkcs1(p.read())
-
-        #     print(rsa.decrypt(body.encode('UTF-8'), private_key))
-        # print(keys.decrypt(body, self.server.private_key))
+        cypertext = keys.deserialize(body)
+        # print(keys.decrypt(cypertext, self.server.private_key))
         return "OK".encode('UTF-8')
