@@ -1,4 +1,5 @@
 import json
+from pwinput import pwinput
 from src import client, service, keys
 from src.utils.serialize import serialize, deserialize
 
@@ -12,7 +13,7 @@ if __name__ == "__main__":
 
     # Auth
     name = input("Digite seu nome: ")
-    pwd = input("Digite sua senha: ")
+    pwd = pwinput("Digite sua senha: ")
 
     ciphered_name = keys.encrypt(name, public_key)
     ciphered_pwd = keys.encrypt(pwd, public_key)
